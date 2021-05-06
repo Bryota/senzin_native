@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import axios from 'axios';
 import Slick from 'react-native-slick';
 import { Ionicons } from '@expo/vector-icons'; 
 import FooterMenu from './FooterMenu';
+import Header from './Header';
 import PostListType from '../util/PostListType'
 import OmitValue from '../util/OmitValue';
 
@@ -18,12 +19,9 @@ const Top: React.FC = () => {
         })
     },[])
 
-    const bgimg = require('../assets/bgimg.png');
     return (
         <View>
-            <ImageBackground source={bgimg} style={{width: '100%', height: 150}}>
-                <Text style={styles.top_bgimg__title}>先人の知恵</Text>
-            </ImageBackground>
+            <Header />
             <View style={styles.top_ideas}>
                 <View style={styles.top_ideas__title}>
                     <Text style={styles.top_ideas__title__text}>投稿一覧</Text>

@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     top_ideas: {
         backgroundColor: '#ddcaaf',
-        height: '73%',
+        height: '82%',
         paddingTop: 50,
         paddingBottom: 50
     },

@@ -17,11 +17,11 @@ const FooterMenu= () => {
                 <MaterialIcons name="category" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>カテゴリー</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerMenu__item}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Post')}>
                 <MaterialIcons name="post-add" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>投稿</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerMenu__item}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Search')}>
                 <Feather name="search" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>検索</Text>
             </TouchableOpacity>
@@ -37,12 +37,15 @@ const styles = StyleSheet.create({
     footerMenu__wrap: {
         alignItems: 'center',
         backgroundColor: '#fff',
+        bottom: 0,
         flexDirection: 'row',
+        position: 'absolute',
         justifyContent: 'space-between',
         paddingTop: 10,
         paddingBottom: 20,
         paddingRight: 30,
-        paddingLeft: 30
+        paddingLeft: 30,
+        width: '100%'
     },
     footerMenu__item: {
         alignItems: 'center',

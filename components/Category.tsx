@@ -1,57 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import Slick from 'react-native-slick';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import axios from 'axios';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
 import Header from './Header';
 import FooterMenu from './FooterMenu';
 import PostListType from '../util/PostListType';
 import OmitValue from '../util/OmitValue';
+import getCategoryIcon from '../util/CategoryIcon';
 
+type CategoryParamList = {
+    Category: { categoryId: number}
+}
 
-const Category: React.FC = () => {
-    const [categoryId, setCategoryId] = useState(1);
-    const [categoryIcon, setCategoryIcon] = useState<string>();
+type CategoryRouteProps = RouteProp<CategoryParamList, 'Category'>
+
+interface IconItemsType {
+    iconGruop: string,
+    iconName: string,
+    iconColor: string
+}
+
+const Category= () => {
+    const [categoryIcon, setCategoryIcon] = useState<IconItemsType>();
     const [categoryName, setCategoryName] = useState<string>();
     const [postList, setPostList] = useState<PostListType[]>();
-
+    const route = useRoute<CategoryRouteProps>();
+    const categoryId = route.params.categoryId;
     useEffect(() => {
-        axios.get(`http://senzin.site/api/getCategoryName/1`)
+        axios.get(`http://senzin.site/api/getCategoryName/${categoryId}`)
         .then((res) => {
             setCategoryName(res.data.category_name);
         });
-        axios.get(`http://senzin.site/api/getPostDataInCategory/1`)
+        setCategoryIcon(getCategoryIcon(categoryId.toString()));
+        axios.get(`http://senzin.site/api/getPostDataInCategory/${categoryId}`)
         .then((res) => {
             setPostList(res.data.data);
         });
-    },[]);
-
+    },[categoryId]);
     return (
         <View>
             <Header />
             <View style={styles.category__wrap}>
                 <View style={styles.category__title__wrap}>
-                    <MaterialCommunityIcons name="silverware-fork-knife" size={50} color="red" />
+                    {(() => {
+                        if (categoryIcon?.iconGruop === 'MaterialCommunityIcons') {
+                            return <MaterialCommunityIcons name={categoryIcon.iconName} size={50} color={categoryIcon.iconColor} />
+                        }
+                        if (categoryIcon?.iconGruop === 'FontAwesome5') {
+                            return <FontAwesome5 name={categoryIcon.iconName} size={50} color={categoryIcon.iconColor} />
+                        }
+                        if (categoryIcon?.iconGruop === 'Entypo') {
+                            return <Entypo name={categoryIcon.iconName} size={50} color={categoryIcon.iconColor} />
+                        }
+                    })()}
                     <Text style={styles.category__title}>{categoryName}</Text>
                 </View>
-                <Slick style={styles.category__items} autoplay={true} autoplayTimeout={2} dotStyle={{display: 'none'}} activeDotStyle={{display: 'none'}}>
-                    {postList?.map((post) => {
-                        return (
-                            <View style={styles.category__item} key={post.post_id}>
-                                <View style={styles.category__item__balloon}>
-                                    <Text style={styles.category__item__title}>{OmitValue(post.title, 6)}</Text>
-                                    <Text style={styles.category__item__content}>{OmitValue(post.content, 40)}</Text>
+                <SafeAreaView>
+                    <ScrollView style={styles.category__items}>
+                        {postList?.map((post) => {
+                            return (
+                                <View style={styles.category__item} key={post.post_id}>
+                                    <View style={styles.category__item__balloon}>
+                                        <Text style={styles.category__item__title}>{OmitValue(post.title, 6)}</Text>
+                                        <Text style={styles.category__item__content}>{OmitValue(post.content, 40)}</Text>
+                                    </View>
+                                    <View style={styles.category__item__triangle} />
+                                    <View>
+                                        <Ionicons name="person-outline" size={80} color="white" />
+                                    </View>
+                                    <Text style={styles.category__item__username}>{post.username}</Text>
                                 </View>
-                                <View style={styles.category__item__triangle} />
-                                <View>
-                                    <Ionicons name="person-outline" size={80} color="white" />
-                                </View>
-                                <Text style={styles.category__item__username}>{post.username}</Text>
-                            </View>
-                        )
-                    })}
-                </Slick>
+                            )
+                        })}
+                    </ScrollView>
+                </SafeAreaView>
             </View>
             <FooterMenu />
         </View>
@@ -62,7 +88,6 @@ const styles = StyleSheet.create({
     category__wrap: {
         backgroundColor: '#ddcaaf',
         paddingTop: 50,
-        paddingBottom: 100
     },
     category__title__wrap: {
         flexDirection: 'row',
@@ -74,11 +99,13 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     category__items: {
-        marginTop: 60
+        height: '70%',
+        marginTop: 35
     },
     category__item: {
         alignItems: 'center',
-        justifyContent: 'center'
+        marginBottom: 40,
+        justifyContent: 'center',
     },
     category__item__balloon: {
         marginVertical: 'auto',

@@ -1,17 +1,30 @@
+interface IconItemsType {
+    iconGruop: string,
+    iconName: string,
+    iconColor: string
+}
+
 const getCategoryIcon = (category_id: string) => {
+    let iconItems: IconItemsType
     switch (category_id) {
         case '1':
-            return "fas fa-utensils icon__food";
+            iconItems = { iconGruop: 'MaterialCommunityIcons', iconName: 'silverware-fork-knife', iconColor: 'red'}
+            return iconItems
         case '2':
-            return "fas fa-broom icon__clean";
+            iconItems = { iconGruop: 'FontAwesome5', iconName: 'broom', iconColor: 'green'}
+            return iconItems
         case '3':
-            return "fas fa-plus-square icon__health";
+            iconItems = { iconGruop: 'Entypo', iconName: 'squared-plus', iconColor: 'blue'}
+            return iconItems
         case '4':
-            return "fas fa-running icon__sport";
+            iconItems = { iconGruop: 'FontAwesome5', iconName: 'running', iconColor: 'orange'}
+            return iconItems
         case '5':
-            return "fas fa-tv icon__machine";
+            iconItems = { iconGruop: 'Entypo', iconName: 'tv', iconColor: 'purple'}
+            return iconItems
         case '6':
-            return "fas fa-ellipsis-h icon__other";
+            iconItems = { iconGruop: 'Entypo', iconName: 'dots-three-horizontal', iconColor: 'black'}
+            return iconItems
         default:
             return;
         

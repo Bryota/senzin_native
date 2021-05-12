@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
 const FooterMenu= () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
     return (
         <View style={styles.footerMenu__wrap}>
             <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Top')}>

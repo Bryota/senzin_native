@@ -6,17 +6,23 @@ import CategoryList from './components/CategoryList';
 import Category from './components/Category';
 import Post from './components/Post';
 import Search from './components/Search';
+import Login from './components/Login';
+import Register from './components/Register';
+import Single from './components/Single';
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Post">
+      <Stack.Navigator initialRouteName="Single">
         <Stack.Screen name="Top" component={Top} />
         <Stack.Screen name="CategoryList" component={CategoryList} />
         <Stack.Screen name="Category" component={Category} />
         <Stack.Screen name="Post" component={Post} />
         <Stack.Screen name="Search" component={Search} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Single" component={Single} />
       </Stack.Navigator>
     </NavigationContainer>
   );

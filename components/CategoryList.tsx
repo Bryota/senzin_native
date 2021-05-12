@@ -4,11 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import Header from './Header'
-import FooterMenu from './FooterMenu'
+import Header from './Header';
+import FooterMenu from './FooterMenu';
 
 const CategoryList: React.FC = () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
     return (
         <View>
             <Header />

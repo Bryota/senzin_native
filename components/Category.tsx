@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import axios from 'axios';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -30,6 +31,7 @@ const Category= () => {
     const [postList, setPostList] = useState<PostListType[]>();
     const route = useRoute<CategoryRouteProps>();
     const categoryId = route.params.categoryId;
+    const navigation = useNavigation();
     useEffect(() => {
         axios.get(`http://senzin.site/api/getCategoryName/${categoryId}`)
         .then((res) => {
@@ -63,7 +65,7 @@ const Category= () => {
                     <ScrollView style={styles.category__items}>
                         {postList?.map((post) => {
                             return (
-                                <View style={styles.category__item} key={post.post_id}>
+                                <TouchableOpacity style={styles.category__item} key={post.post_id} onPress={() => navigation.navigate('Single', { post_id: post.post_id })}>
                                     <View style={styles.category__item__balloon}>
                                         <Text style={styles.category__item__title}>{OmitValue(post.title, 6)}</Text>
                                         <Text style={styles.category__item__content}>{OmitValue(post.content, 40)}</Text>
@@ -73,7 +75,7 @@ const Category= () => {
                                         <Ionicons name="person-outline" size={80} color="white" />
                                     </View>
                                     <Text style={styles.category__item__username}>{post.username}</Text>
-                                </View>
+                                </TouchableOpacity>
                             )
                         })}
                     </ScrollView>

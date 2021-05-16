@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Slick from 'react-native-slick';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -11,7 +12,7 @@ import OmitValue from '../util/OmitValue';
 
 const Top: React.FC = () => {
     const [postList, setPostList] = useState<PostListType[]>();
-
+    const navigation = useNavigation()
     useEffect(() => {
         axios.get(`http://senzin.site/api/getPostData`)
         .then((res) => {
@@ -29,7 +30,7 @@ const Top: React.FC = () => {
                 <Slick style={styles.top_ideas__items} autoplay={true} autoplayTimeout={2} dotStyle={{display: 'none'}} activeDotStyle={{display: 'none'}}>
                     {postList?.map((post) => {
                         return (
-                            <View style={styles.top_ideas__item} key={post.post_id}>
+                            <TouchableOpacity style={styles.top_ideas__item} key={post.post_id} onPress={() => navigation.navigate('Single', { post_id: post.post_id})}>
                                 <View style={styles.top_ideas__item__balloon}>
                                     <Text style={styles.top_ideas__item__title}>{OmitValue(post.title, 6)}</Text>
                                     <Text style={styles.top_ideas__item__category}>{post.category.category_name}</Text>
@@ -40,7 +41,7 @@ const Top: React.FC = () => {
                                     <Ionicons name="person-outline" size={80} color="white" />
                                 </View>
                                 <Text style={styles.top_ideas__item__username}>{post.username}</Text>
-                            </View>
+                            </TouchableOpacity>
                         )
                     })}
                 </Slick>

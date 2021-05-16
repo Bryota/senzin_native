@@ -25,7 +25,7 @@ const FooterMenu= () => {
                 <Feather name="search" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>検索</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerMenu__item}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Mylist')}>
                 <Feather name="list" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>マイリスト</Text>
             </TouchableOpacity>

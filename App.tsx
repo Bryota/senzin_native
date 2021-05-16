@@ -9,12 +9,14 @@ import Search from './components/Search';
 import Login from './components/Login';
 import Register from './components/Register';
 import Single from './components/Single';
+import Mylist from './components/Mylist';
+import Result from './components/Result';
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Single">
+      <Stack.Navigator initialRouteName="Top">
         <Stack.Screen name="Top" component={Top} />
         <Stack.Screen name="CategoryList" component={CategoryList} />
         <Stack.Screen name="Category" component={Category} />
@@ -23,6 +25,8 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Single" component={Single} />
+        <Stack.Screen name="Mylist" component={Mylist} />
+        <Stack.Screen name="Result" component={Result} />
       </Stack.Navigator>
     </NavigationContainer>
   );

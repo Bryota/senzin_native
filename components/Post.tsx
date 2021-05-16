@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import Header from './Header';
 import FooterMenu from './FooterMenu';
+import storage from '../util/Storage';
+
 
 interface CategoryType {
     category: '1' | '2' | '3' | '4' | '5' | '6';
+}
+
+interface PostType {
+    title: string
+    category: CategoryType;
+    username: string;
+    content: string;
 }
 
 const Post: React.FC = () => {
@@ -13,6 +24,28 @@ const Post: React.FC = () => {
     const [category, setCotegory] = useState<CategoryType | string>("1");
     const [username, setUsername] = useState<string>('匿名希望');
     const [content, setContent] = useState<string>();
+    const navigation = useNavigation();
+
+
+    const sendPostDataToDB = async(data: PostType) => {
+        await axios.post('http://senzin.site/api/setPostData', data)
+        .then(() => {
+            setTitle('');
+            setCotegory('');
+            setUsername('');
+            setContent('');
+        })
+    }
+
+    const submitPostData = async() => {
+        await sendPostDataToDB({
+            title: title as string,
+            category: category as CategoryType,
+            username: username as string,
+            content: content as string
+        });
+        navigation.navigate('Top');
+    }
     return (
         <View>
             <Header />
@@ -25,7 +58,7 @@ const Post: React.FC = () => {
                         <View style={styles.post__form__items}>
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>投稿タイトル<Text style={styles.post__form__required}>必須</Text></Text>
-                                <TextInput style={styles.post__form__input} />
+                                <TextInput style={styles.post__form__input} onChangeText={setTitle} value={title}/>
                             </View>
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>カテゴリ<Text style={styles.post__form__required}>必須</Text></Text>
@@ -45,15 +78,15 @@ const Post: React.FC = () => {
                             </View>
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>投稿者名<Text style={styles.post__form__required}>必須</Text></Text>
-                                <TextInput style={styles.post__form__input} value={username} />
+                                <TextInput style={styles.post__form__input} onChangeText={setUsername} value={username} />
                             </View>
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>内容<Text style={styles.post__form__required}>必須</Text></Text>
-                                <TextInput style={styles.post__form__textarea} multiline/>
+                                <TextInput style={styles.post__form__textarea} multiline onChangeText={setContent} value={content}/>
                             </View>
-                            <View style={styles.post__form__btn__wrap}>
+                            <TouchableOpacity style={styles.post__form__btn__wrap} onPress={submitPostData}>
                                 <Text style={styles.post__form__btn__text}>投稿する</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                 </SafeAreaView>

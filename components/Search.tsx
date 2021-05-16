@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import Header from './Header';
 import FooterMenu from './FooterMenu';
+import storage from '../util/Storage';
 
 interface CategoryType {
     category: '1' | '2' | '3' | '4' | '5' | '6';
 }
 
 const Search: React.FC = () => {
-    const [category, setCotegory] = useState<CategoryType | string>("1");
+    const [category, setCategory] = useState<CategoryType | string>("1");
     const [freeword, setFreeword] = useState<string>();
+    const navigation = useNavigation();
     return (
         <View>
             <Header />
@@ -26,7 +29,7 @@ const Search: React.FC = () => {
                                 <RNPickerSelect
                                     placeholder={{ label: 'カテゴリを選択してください', value: '' }}
                                     value={category}
-                                    onValueChange={(e) => setCotegory(e)}
+                                    onValueChange={(e) => setCategory(e)}
                                     style={selectStyle}
                                     items={[
                                         { label: '食べ物', value: '1' },
@@ -39,11 +42,11 @@ const Search: React.FC = () => {
                             </View>
                             <View style={styles.search__form__items}>
                                 <Text style={styles.search__form__text}>フリーワード<Text style={styles.search__form__required}>必須</Text></Text>
-                                <TextInput style={styles.search__form__input} />
+                                <TextInput style={styles.search__form__input} onChangeText={setFreeword} value={freeword}/>
                             </View>
-                            <View style={styles.search__form__btn__wrap}>
+                            <TouchableOpacity style={styles.search__form__btn__wrap} onPress={() => navigation.navigate('Result', { category: category.toString(), freeword: freeword })}>
                                 <Text style={styles.search__form__btn__text}>検索する</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                 </SafeAreaView>

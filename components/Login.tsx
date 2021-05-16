@@ -1,13 +1,71 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import Header from './Header';
 import FooterMenu from './FooterMenu';
+import storage from '../util/Storage';
+
+interface LoginDataType {
+    email: string,
+    password: string
+}
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState<string>();
-    const [password, setPassword] = useState<string>();
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [userId, setUserId] = useState<number>(0);
+    const [loginState, setLoginState] = useState<string>('');
     const navigation = useNavigation();
+
+    useEffect(() => {
+        switch (loginState) {
+            case 'logined':
+                storage.save({
+                    key: 'AUTH',
+                    data: {
+                        userId: userId
+                    }
+                })
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Mylist' }]
+                });
+                break;
+            case 'invalid-email':
+                console.log(loginState);
+                // setEmailValidationFlg(true);
+                break;
+            case 'invalid-password':
+                console.log(loginState);
+                // setPasswordValidationFlg(true);
+                break;
+            default:
+                console.log(loginState);
+                // setEmailValidationFlg(false);
+                // setPasswordValidationFlg(false);
+                break;
+        }
+    },[loginState, email, password]);
+
+    const sendLoginUserDataToDB = (data: LoginDataType) => {
+        axios.post('http://senzin.site/api/checkLoginUser', data)
+        .then((res) => {
+            if (res.data[1]) {
+                setUserId(res.data[1] as number);
+            }
+            setLoginState(res.data[0]);
+            setEmail('');
+            setPassword('');
+        })
+    }
+
+    const submitLoginInfo = () => {
+        sendLoginUserDataToDB({
+            email: email,
+            password: password
+        });
+    }
     return (
         <View>
             <Header />
@@ -20,15 +78,15 @@ const Login: React.FC = () => {
                         <View style={styles.login__form__items}>
                             <View style={styles.login__form__items}>
                                 <Text style={styles.login__form__text}>メールアドレス<Text style={styles.login__form__required}>必須</Text></Text>
-                                <TextInput style={styles.login__form__input} />
+                                <TextInput style={styles.login__form__input} onChangeText={setEmail} value={email} autoCapitalize='none' />
                             </View>
                             <View style={styles.login__form__items}>
                                 <Text style={styles.login__form__text}>パスワード<Text style={styles.login__form__required}>必須</Text></Text>
-                                <TextInput style={styles.login__form__input} />
+                                <TextInput style={styles.login__form__input} onChangeText={setPassword} value={password} autoCapitalize='none'/>
                             </View>
-                            <View style={styles.login__form__btn__wrap}>
+                            <TouchableOpacity style={styles.login__form__btn__wrap} onPress={submitLoginInfo}>
                                 <Text style={styles.login__form__btn__text}>ログイン</Text>
-                            </View>
+                            </TouchableOpacity>
                             <Text style={styles.login__form__to__register} onPress={() => navigation.navigate('Register')}>新規登録</Text>
                         </View>
                     </ScrollView>

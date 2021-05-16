@@ -1,14 +1,51 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import Header from './Header';
 import FooterMenu from './FooterMenu';
+import storage from '../util/Storage';
+
+interface RegisterDataType {
+    email: string,
+    name: string,
+    password: string
+}
 
 const Register: React.FC = () => {
-    const [email, setEmail] = useState<string>();
-    const [username, setUsername] = useState<string>();
-    const [password, setPassword] = useState<string>();
+    const [email, setEmail] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [passwordComfire, setPasswordComfire] = useState<string>();
     const navigation = useNavigation();
+
+    const sendRegisterDataToDB = async(data: RegisterDataType) => {
+        await axios.post('http://senzin.site/api/setNewUser', data)
+        .then((res) => {
+            if (res.data === 'invalid-email') {
+                // setUniqueEmailFlg(true);
+                setPassword('');
+                setPasswordComfire('');
+            } else {
+                setEmail('');
+                setUsername('');
+                setPassword('');
+                setPasswordComfire('');
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }]
+                });
+            }
+        })
+    }
+
+    const submitRegisterInfo = () => {
+        sendRegisterDataToDB({
+            email: email,
+            name: username,
+            password: password
+        })
+    }
     return (
         <View>
             <Header />
@@ -21,23 +58,23 @@ const Register: React.FC = () => {
                         <View style={styles.register__form__items}>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>メールアドレス<Text style={styles.register__form__required}>必須</Text></Text>
-                                <TextInput style={styles.register__form__input} />
+                                <TextInput style={styles.register__form__input} onChangeText={setEmail} autoCapitalize='none'/>
                             </View>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>ユーザー名<Text style={styles.register__form__required}>必須</Text></Text>
-                                <TextInput style={styles.register__form__input} />
+                                <TextInput style={styles.register__form__input} onChangeText={setUsername} autoCapitalize='none'/>
                             </View>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>パスワード<Text style={styles.register__form__required}>必須</Text></Text>
-                                <TextInput style={styles.register__form__input} />
+                                <TextInput style={styles.register__form__input} onChangeText={setPassword} autoCapitalize='none'/>
                             </View>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>パスワード確認</Text>
-                                <TextInput style={styles.register__form__input} />
+                                <TextInput style={styles.register__form__input} onChangeText={setPasswordComfire} autoCapitalize='none'/>
                             </View>
-                            <View style={styles.register__form__btn__wrap}>
+                            <TouchableOpacity style={styles.register__form__btn__wrap} onPress={submitRegisterInfo}>
                                 <Text style={styles.register__form__btn__text}>新規登録</Text>
-                            </View>
+                            </TouchableOpacity>
                             <Text style={styles.register__form__to__register} onPress={() => navigation.navigate('Login')}>ログイン</Text>
                         </View>
                     </ScrollView>

@@ -11,23 +11,18 @@ const FooterMenu= () => {
         <View style={styles.footerMenu__wrap}>
             <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Top'}]})}>
                 <Entypo name="home" size={24} color="#6f6152" />
-                <Text style={styles.footerMenu__text}>一覧</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'CategoryList'}]})}>
                 <MaterialIcons name="category" size={24} color="#6f6152" />
-                <Text style={styles.footerMenu__text}>カテゴリー</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Post'}]})}>
                 <MaterialIcons name="post-add" size={24} color="#6f6152" />
-                <Text style={styles.footerMenu__text}>投稿</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Search'}]})}>
                 <Feather name="search" size={24} color="#6f6152" />
-                <Text style={styles.footerMenu__text}>検索</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Mylist'}]})}>
                 <Feather name="list" size={24} color="#6f6152" />
-                <Text style={styles.footerMenu__text}>マイリスト</Text>
             </TouchableOpacity>
         </View>
     )
@@ -41,8 +36,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute',
         justifyContent: 'space-between',
-        paddingTop: 10,
-        paddingBottom: 20,
+        paddingTop: 15,
+        paddingBottom: 15,
         paddingRight: 30,
         paddingLeft: 30,
         width: '100%'
@@ -50,9 +45,6 @@ const styles = StyleSheet.create({
     footerMenu__item: {
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    footerMenu__text: {
-        marginTop: 5
     },
 });
 

@@ -68,7 +68,7 @@ const Login: React.FC = () => {
         });
     }
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.login__wrap}>
                 <View style={styles.login__title__wrap}>
@@ -109,6 +109,9 @@ const Login: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1 
+    },
     login__wrap: {
         backgroundColor: '#eee',
         paddingTop: 20,

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import Slick from 'react-native-slick';
 import { Ionicons } from '@expo/vector-icons'; 
 import FooterMenu from './FooterMenu';
 import Header from './Header';
@@ -21,13 +20,14 @@ const Top: React.FC = () => {
     },[])
 
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.top_ideas}>
                 <View style={styles.top_ideas__title}>
                     <Text style={styles.top_ideas__title__text}>投稿一覧</Text>
                 </View>
-                <Slick style={styles.top_ideas__items} autoplay={true} autoplayTimeout={2} dotStyle={{display: 'none'}} activeDotStyle={{display: 'none'}}>
+                <SafeAreaView>
+                    <ScrollView>
                     {postList?.map((post) => {
                         return (
                             <TouchableOpacity style={styles.top_ideas__item} key={post.post_id} onPress={() => navigation.navigate('Single', { post_id: post.post_id})}>
@@ -44,7 +44,8 @@ const Top: React.FC = () => {
                             </TouchableOpacity>
                         )
                     })}
-                </Slick>
+                    </ScrollView>
+                </SafeAreaView>
             </View>
             <FooterMenu />
         </View>
@@ -52,6 +53,9 @@ const Top: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     top_bgimg__title:  {
         color: '#fff',
         fontSize: 50,
@@ -63,7 +67,8 @@ const styles = StyleSheet.create({
     },
     top_ideas: {
         backgroundColor: '#ddcaaf',
-        height: '82%',
+        minHeight: '83%',
+        height: '90%',
         paddingTop: 50,
         paddingBottom: 50
     },
@@ -80,7 +85,8 @@ const styles = StyleSheet.create({
     },
     top_ideas__item: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginBottom: 30
     },
     top_ideas__item__balloon: {
         marginVertical: 'auto',

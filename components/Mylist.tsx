@@ -63,7 +63,7 @@ const Mylist: React.FC = () => {
         })
     }
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.mylist__wrap}>
                 <Text style={styles.mylist__title}>マイリスト</Text>
@@ -124,6 +124,9 @@ const Mylist: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     mylist__wrap: {
         backgroundColor: '#ddcaaf',
         height: '83%',

@@ -33,7 +33,7 @@ const Result: React.FC = () => {
 
 
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.result__ideas}>
                 <View style={styles.result__ideas__title}>
@@ -66,6 +66,9 @@ const Result: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     result__bgimg__title:  {
         color: '#fff',
         fontSize: 50,

@@ -10,7 +10,7 @@ import FooterMenu from './FooterMenu';
 const CategoryList: React.FC = () => {
     const navigation = useNavigation();
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.categoryList__wrap}>
                 <View style={styles.categoryList__items}>
@@ -50,6 +50,9 @@ const CategoryList: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     categoryList__wrap: {
         backgroundColor: '#ddcaaf',
         height: '83%',

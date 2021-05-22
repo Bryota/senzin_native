@@ -44,7 +44,7 @@ const Category= () => {
         });
     },[categoryId]);
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.category__wrap}>
                 <View style={styles.category__title__wrap}>
@@ -87,6 +87,9 @@ const Category= () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     category__wrap: {
         backgroundColor: '#ddcaaf',
         paddingTop: 50,

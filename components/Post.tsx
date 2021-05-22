@@ -61,7 +61,7 @@ const Post: React.FC = () => {
         navigation.navigate('Top');
     }
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.post__wrap}>
                 <View style={styles.post__title__wrap}>
@@ -131,6 +131,9 @@ const Post: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     post__wrap: {
         backgroundColor: '#eee',
         paddingTop: 20,

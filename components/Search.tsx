@@ -33,7 +33,7 @@ const Search: React.FC = () => {
         navigation.navigate('Result', { category: category.toString(), freeword: freeword })
     }
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.search__wrap}>
                 <View style={styles.search__title__wrap}>
@@ -85,6 +85,9 @@ const Search: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     search__wrap: {
         backgroundColor: '#eee',
         paddingTop: 20,

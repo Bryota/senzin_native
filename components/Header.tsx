@@ -5,7 +5,7 @@ const Header: React.FC = () => {
     const bgimg = require('../assets/bgimg.png');
 
     return (
-        <ImageBackground source={bgimg} style={{width: '100%', height: 150}}>
+        <ImageBackground source={bgimg} style={{width: '100%', height: 100}}>
             <Text style={styles.top_bgimg__title}>先人の知恵</Text>
         </ImageBackground>
     )
@@ -14,12 +14,11 @@ const Header: React.FC = () => {
 const styles = StyleSheet.create({
     top_bgimg__title:  {
         color: '#fff',
-        fontSize: 50,
+        fontSize: 30,
         fontWeight: 'bold',
         fontFamily: 'Palatino-Bold',
         textAlign: 'center',
-        paddingTop: 50,
-        paddingBottom: 10
+        paddingTop: 40,
     },
 })
 

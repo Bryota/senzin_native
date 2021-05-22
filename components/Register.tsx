@@ -78,7 +78,7 @@ const Register: React.FC = () => {
         })
     }
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.register__wrap}>
                 <View style={styles.register__title__wrap}>
@@ -142,6 +142,9 @@ const Register: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     register__wrap: {
         backgroundColor: '#eee',
         paddingTop: 20,

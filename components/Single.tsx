@@ -63,7 +63,7 @@ const Single: React.FC = () => {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
             <Header />
             <View style={styles.single__wrap}>
                 <Text style={styles.single__title}>{postData?.title}</Text>
@@ -71,13 +71,13 @@ const Single: React.FC = () => {
                 <Text style={styles.single__category}>
                 {(() => {
                         if (categoryIcon?.iconGruop === 'MaterialCommunityIcons') {
-                            return <MaterialCommunityIcons name={categoryIcon.iconName} size={50} color={categoryIcon.iconColor} />
+                            return <MaterialCommunityIcons name={categoryIcon.iconName} size={20} color={categoryIcon.iconColor} />
                         }
                         if (categoryIcon?.iconGruop === 'FontAwesome5') {
-                            return <FontAwesome5 name={categoryIcon.iconName} size={50} color={categoryIcon.iconColor} />
+                            return <FontAwesome5 name={categoryIcon.iconName} size={20} color={categoryIcon.iconColor} />
                         }
                         if (categoryIcon?.iconGruop === 'Entypo') {
-                            return <Entypo name={categoryIcon.iconName} size={50} color={categoryIcon.iconColor} />
+                            return <Entypo name={categoryIcon.iconName} size={20} color={categoryIcon.iconColor} />
                         }
                     })()}
                     <Text style={styles.single__category__text}>{postData?.category.category_name}</Text>
@@ -88,17 +88,23 @@ const Single: React.FC = () => {
                     </ScrollView>
                 </SafeAreaView>
                 {canSetMylist ?
-                <TouchableOpacity style={styles.single__addmylist__btn__wrap} onPress={sendMylistDataToDB}>
-                    <Text style={styles.single__addmylist__btn__text}>マイリストに追加</Text>
-                </TouchableOpacity>
+                <View style={styles.single__addmylist__btn}>
+                    <TouchableOpacity style={styles.single__addmylist__btn__wrap} onPress={sendMylistDataToDB}>
+                        <Text style={styles.single__addmylist__btn__text}>マイリストに追加</Text>
+                    </TouchableOpacity>
+                </View>
                 :
-                <TouchableOpacity style={styles.single__addmylist__btn__wrap__disable} disabled={true}>
-                    <Text style={styles.single__addmylist__btn__text}>マイリストに追加</Text>
-                </TouchableOpacity>
+                <View style={styles.single__addmylist__btn}>
+                    <TouchableOpacity style={styles.single__addmylist__btn__wrap__disable} disabled={true}>
+                        <Text style={styles.single__addmylist__btn__text}>マイリストに追加</Text>
+                    </TouchableOpacity>
+                </View>
                 }
-                <TouchableOpacity style={styles.single__back__btn__wrap} onPress={() => navigation.goBack()}>
-                    <Text style={styles.single__back__btn__text}>戻る</Text>
-                </TouchableOpacity>
+                <View style={styles.single__back__btn}>
+                    <TouchableOpacity style={styles.single__back__btn__wrap} onPress={() => navigation.goBack()}>
+                        <Text style={styles.single__back__btn__text}>戻る</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
             <FooterMenu />
         </View>
@@ -106,13 +112,16 @@ const Single: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     single__wrap: {
         backgroundColor: '#ddcaaf',
         height: '82%',
         paddingTop: 30,
     },
     single__title: {
-        fontSize: 40,
+        fontSize: 30,
         fontWeight: 'bold',
         textAlign: 'center',
         marginRight: 'auto',
@@ -120,27 +129,34 @@ const styles = StyleSheet.create({
         width: '70%'
     },
     single__username: {
-        fontSize: 30,
+        fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 20
     },
     single__category: {
         textAlign: 'center',
-        marginTop: 30
+        marginTop: 20
     },
     single__category__text: {
-        fontSize: 40,
+        fontSize: 30,
         fontWeight: 'bold'
     },
     single__content: {
         fontSize: 18,
-        lineHeight: 25,
-        height: 130,
-        marginTop: 50,
+        lineHeight: 20,
+        height: 170,
+        marginTop: 20,
         marginRight: 'auto',
         marginLeft: 'auto',
         width: '70%'
+    },
+    single__addmylist__btn: {
+        alignItems: 'center',
+        bottom: 120,
+        left: 0,
+        right: 0,
+        position: 'absolute',
     },
     single__addmylist__btn__wrap: {
         textAlign: 'center',
@@ -153,26 +169,27 @@ const styles = StyleSheet.create({
         },
         shadowRadius: 0,
         shadowOpacity: 1,
-        marginTop: 60,
-        marginRight: 'auto',
-        marginLeft: 'auto',
         width: '50%'
     },
     single__addmylist__btn__wrap__disable: {
         textAlign: 'center',
         backgroundColor: '#eee',
         borderRadius: 30,
-        marginTop: 60,
-        marginRight: 'auto',
-        marginLeft: 'auto',
-        width: '50%'
+        width: '50%',
     },
     single__addmylist__btn__text: {
         color: '#6f6152',
         textAlign: 'center',
         fontSize: 18,
         paddingTop: 15,
-        paddingBottom: 15
+        paddingBottom: 15,
+    },
+    single__back__btn: {
+        alignItems: 'center',
+        bottom: 50,
+        left: 0,
+        right: 0,
+        position: 'absolute',
     },
     single__back__btn__wrap: {
         textAlign: 'center',

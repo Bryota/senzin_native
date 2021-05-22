@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Header from './Header';
 import FooterMenu from './FooterMenu';
-import storage from '../util/Storage';
+import Validation from '../util/Validation';
+
 
 interface RegisterDataType {
     email: string,
@@ -17,13 +18,39 @@ const Register: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordComfire, setPasswordComfire] = useState<string>();
+    const [emailValidationFlg, setEmailValidationFlg] = useState<boolean>(false);
+    const [uniqueEmailFlg, setUniqueEmailFlg] = useState<boolean>(false);
+    const [nameValidationFlg, setNameValidationFlg] = useState<boolean>(false);
+    const [passwordValidationFlg, setPasswordValidationFlg] = useState<boolean>(false);
+    const [passwordComfireValidationFlg, setPasswordComfireValidationFlg] = useState<boolean>(false);
+
     const navigation = useNavigation();
+
+    useEffect(() => {
+        checkInputValidation();
+    },[email,username,password])
+
+    const checkInputValidation = () => {
+        Validation(email, setEmailValidationFlg);
+        Validation(username, setNameValidationFlg);
+        Validation(password, setPasswordValidationFlg);
+    }
+
+    const checkSendValidation = () => {
+        setPasswordComfireValidationFlg(false);
+        if (password !== passwordComfire) {
+            setPasswordComfireValidationFlg(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     const sendRegisterDataToDB = async(data: RegisterDataType) => {
         await axios.post('http://senzin.site/api/setNewUser', data)
         .then((res) => {
             if (res.data === 'invalid-email') {
-                // setUniqueEmailFlg(true);
+                setUniqueEmailFlg(true);
                 setPassword('');
                 setPasswordComfire('');
             } else {
@@ -40,6 +67,10 @@ const Register: React.FC = () => {
     }
 
     const submitRegisterInfo = () => {
+        setUniqueEmailFlg(false)
+        if (checkSendValidation()) {
+            return;
+        }
         sendRegisterDataToDB({
             email: email,
             name: username,
@@ -58,19 +89,44 @@ const Register: React.FC = () => {
                         <View style={styles.register__form__items}>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>メールアドレス<Text style={styles.register__form__required}>必須</Text></Text>
-                                <TextInput style={styles.register__form__input} onChangeText={setEmail} autoCapitalize='none'/>
+                                <TextInput style={styles.register__form__input} onChangeText={setEmail} autoCapitalize='none' value={email}/>
+                                {emailValidationFlg ?
+                                <Text style={styles.validation}>メールアドレスを入力してください</Text>
+                                :
+                                <></>
+                                }
+                                {uniqueEmailFlg ?
+                                <Text style={styles.validation}>メールアドレスが既に使われています</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>ユーザー名<Text style={styles.register__form__required}>必須</Text></Text>
-                                <TextInput style={styles.register__form__input} onChangeText={setUsername} autoCapitalize='none'/>
+                                <TextInput style={styles.register__form__input} onChangeText={setUsername} autoCapitalize='none' value={username}/>
+                                {nameValidationFlg ?
+                                <Text style={styles.validation}>ユーザー名を入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>パスワード<Text style={styles.register__form__required}>必須</Text></Text>
-                                <TextInput style={styles.register__form__input} onChangeText={setPassword} autoCapitalize='none'/>
+                                <TextInput style={styles.register__form__input} onChangeText={setPassword} autoCapitalize='none' value={password}/>
+                                {passwordValidationFlg ?
+                                <Text style={styles.validation}>パスワードを入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.register__form__items}>
                                 <Text style={styles.register__form__text}>パスワード確認</Text>
-                                <TextInput style={styles.register__form__input} onChangeText={setPasswordComfire} autoCapitalize='none'/>
+                                <TextInput style={styles.register__form__input} onChangeText={setPasswordComfire} autoCapitalize='none' value={passwordComfire}/>
+                                {passwordComfireValidationFlg ?
+                                <Text style={styles.validation}>パスワードが一致しません</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <TouchableOpacity style={styles.register__form__btn__wrap} onPress={submitRegisterInfo}>
                                 <Text style={styles.register__form__btn__text}>新規登録</Text>
@@ -157,6 +213,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 15,
         paddingTop: 30
+    },
+    validation: {
+        color: 'red',
+        fontSize: 20,
+        marginTop: 15
     }
 })
 

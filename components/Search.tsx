@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import Header from './Header';
 import FooterMenu from './FooterMenu';
-import storage from '../util/Storage';
+import Validation from '../util/Validation';
+
 
 interface CategoryType {
     category: '1' | '2' | '3' | '4' | '5' | '6';
@@ -13,7 +14,24 @@ interface CategoryType {
 const Search: React.FC = () => {
     const [category, setCategory] = useState<CategoryType | string>("1");
     const [freeword, setFreeword] = useState<string>();
+    const [categoryValidationFlg, setCategoryValidationFlg] = useState<boolean>(false);
+    const [freewordValidationFlg, setFreewordValidationFlg] = useState<boolean>(false);
     const navigation = useNavigation();
+    useEffect(() => {
+        checkValidation();
+    },[category, freeword]);
+
+    const checkValidation = () => {
+        Validation(category as string, setCategoryValidationFlg);
+        Validation(freeword as string, setFreewordValidationFlg);
+    }
+
+    const sendSearchData = () => {
+        if (categoryValidationFlg || freewordValidationFlg) {
+            return
+        }
+        navigation.navigate('Result', { category: category.toString(), freeword: freeword })
+    }
     return (
         <View>
             <Header />
@@ -39,12 +57,22 @@ const Search: React.FC = () => {
                                         { label: 'その他', value: '5' }
                                     ]}
                                 />
+                                {categoryValidationFlg ?
+                                <Text style={styles.validation}>カテゴリを選択してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.search__form__items}>
                                 <Text style={styles.search__form__text}>フリーワード<Text style={styles.search__form__required}>必須</Text></Text>
                                 <TextInput style={styles.search__form__input} onChangeText={setFreeword} value={freeword}/>
+                                {freewordValidationFlg ?
+                                <Text style={styles.validation}>フリーワードを入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
-                            <TouchableOpacity style={styles.search__form__btn__wrap} onPress={() => navigation.navigate('Result', { category: category.toString(), freeword: freeword })}>
+                            <TouchableOpacity style={styles.search__form__btn__wrap} onPress={sendSearchData}>
                                 <Text style={styles.search__form__btn__text}>検索する</Text>
                             </TouchableOpacity>
                         </View>
@@ -123,6 +151,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingTop: 15,
         paddingBottom: 15
+    },
+    validation: {
+        color: 'red',
+        fontSize: 20,
+        marginTop: 15
     }
 })
 

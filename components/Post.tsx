@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import Header from './Header';
 import FooterMenu from './FooterMenu';
-import storage from '../util/Storage';
-
+import Validation from '../util/Validation';
 
 interface CategoryType {
     category: '1' | '2' | '3' | '4' | '5' | '6';
@@ -24,7 +23,22 @@ const Post: React.FC = () => {
     const [category, setCotegory] = useState<CategoryType | string>("1");
     const [username, setUsername] = useState<string>('匿名希望');
     const [content, setContent] = useState<string>();
+    const [titleValidationFlg, setTitleValidationFlg] = useState<boolean>(false);
+    const [categoryValidationFlg, setCategoryValidationFlg] = useState<boolean>(false);
+    const [usernameValidationFlg, setUsernameValidationFlg] = useState<boolean>(false);
+    const [contentValidationFlg, setContentValidationFlg] = useState<boolean>(false);
     const navigation = useNavigation();
+
+    useEffect(() => {
+        checkValidation();
+    },[title, category, username, content])
+
+    const checkValidation = () => {
+        Validation(title as string, setTitleValidationFlg);
+        Validation(category as string, setCategoryValidationFlg);
+        Validation(username as string, setUsernameValidationFlg);
+        Validation(content as string, setContentValidationFlg);
+    }
 
 
     const sendPostDataToDB = async(data: PostType) => {
@@ -59,6 +73,11 @@ const Post: React.FC = () => {
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>投稿タイトル<Text style={styles.post__form__required}>必須</Text></Text>
                                 <TextInput style={styles.post__form__input} onChangeText={setTitle} value={title}/>
+                                {titleValidationFlg ?
+                                <Text style={styles.validation}>投稿タイトルを入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>カテゴリ<Text style={styles.post__form__required}>必須</Text></Text>
@@ -75,14 +94,29 @@ const Post: React.FC = () => {
                                         { label: 'その他', value: '5' }
                                     ]}
                                 />
+                                {categoryValidationFlg ?
+                                <Text style={styles.validation}>カテゴリを選択してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>投稿者名<Text style={styles.post__form__required}>必須</Text></Text>
                                 <TextInput style={styles.post__form__input} onChangeText={setUsername} value={username} />
+                                {usernameValidationFlg ?
+                                <Text style={styles.validation}>投稿者名を入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.post__form__items}>
                                 <Text style={styles.post__form__text}>内容<Text style={styles.post__form__required}>必須</Text></Text>
                                 <TextInput style={styles.post__form__textarea} multiline onChangeText={setContent} value={content}/>
+                                {contentValidationFlg ?
+                                <Text style={styles.validation}>内容を入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <TouchableOpacity style={styles.post__form__btn__wrap} onPress={submitPostData}>
                                 <Text style={styles.post__form__btn__text}>投稿する</Text>
@@ -170,6 +204,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingTop: 15,
         paddingBottom: 15
+    },
+    validation: {
+        color: 'red',
+        fontSize: 20,
+        marginTop: 15
     }
 })
 

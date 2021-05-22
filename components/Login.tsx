@@ -16,6 +16,8 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const [userId, setUserId] = useState<number>(0);
     const [loginState, setLoginState] = useState<string>('');
+    const [emailValidationFlg, setEmailValidationFlg] = useState<boolean>(false);
+    const [passwordValidationFlg, setPasswordValidationFlg] = useState<boolean>(false);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -33,17 +35,14 @@ const Login: React.FC = () => {
                 });
                 break;
             case 'invalid-email':
-                console.log(loginState);
-                // setEmailValidationFlg(true);
+                setEmailValidationFlg(true);
                 break;
             case 'invalid-password':
-                console.log(loginState);
-                // setPasswordValidationFlg(true);
+                setPasswordValidationFlg(true);
                 break;
             default:
-                console.log(loginState);
-                // setEmailValidationFlg(false);
-                // setPasswordValidationFlg(false);
+                setEmailValidationFlg(false);
+                setPasswordValidationFlg(false);
                 break;
         }
     },[loginState, email, password]);
@@ -61,6 +60,8 @@ const Login: React.FC = () => {
     }
 
     const submitLoginInfo = () => {
+        setEmailValidationFlg(false);
+        setPasswordValidationFlg(false);
         sendLoginUserDataToDB({
             email: email,
             password: password
@@ -79,10 +80,20 @@ const Login: React.FC = () => {
                             <View style={styles.login__form__items}>
                                 <Text style={styles.login__form__text}>メールアドレス<Text style={styles.login__form__required}>必須</Text></Text>
                                 <TextInput style={styles.login__form__input} onChangeText={setEmail} value={email} autoCapitalize='none' />
+                                {emailValidationFlg ?
+                                <Text style={styles.validation}>メールアドレスを正しく入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <View style={styles.login__form__items}>
                                 <Text style={styles.login__form__text}>パスワード<Text style={styles.login__form__required}>必須</Text></Text>
                                 <TextInput style={styles.login__form__input} onChangeText={setPassword} value={password} autoCapitalize='none'/>
+                                {passwordValidationFlg ?
+                                <Text style={styles.validation}>パスワードを正しく入力してください</Text>
+                                :
+                                <></>
+                                }
                             </View>
                             <TouchableOpacity style={styles.login__form__btn__wrap} onPress={submitLoginInfo}>
                                 <Text style={styles.login__form__btn__text}>ログイン</Text>
@@ -169,6 +180,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 15,
         paddingTop: 30
+    },
+    validation: {
+        color: 'red',
+        fontSize: 20,
+        marginTop: 15
     }
 })
 

@@ -98,7 +98,7 @@ const Login: React.FC = () => {
                             <TouchableOpacity style={styles.login__form__btn__wrap} onPress={submitLoginInfo}>
                                 <Text style={styles.login__form__btn__text}>ログイン</Text>
                             </TouchableOpacity>
-                            <Text style={styles.login__form__to__register} onPress={() => navigation.navigate('Register')}>新規登録</Text>
+                            <Text style={styles.login__form__to__register} onPress={() => navigation.reset({index: 0, routes: [{name: 'Register'}]})}>新規登録</Text>
                         </View>
                     </ScrollView>
                 </SafeAreaView>

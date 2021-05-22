@@ -23,7 +23,7 @@ const Top: React.FC = () => {
     return (
         <View>
             <Header />
-            {/* <View style={styles.top_ideas}>
+            <View style={styles.top_ideas}>
                 <View style={styles.top_ideas__title}>
                     <Text style={styles.top_ideas__title__text}>投稿一覧</Text>
                 </View>
@@ -45,7 +45,7 @@ const Top: React.FC = () => {
                         )
                     })}
                 </Slick>
-            </View> */}
+            </View>
             <FooterMenu />
         </View>
     )

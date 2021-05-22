@@ -9,23 +9,23 @@ const FooterMenu= () => {
     const navigation = useNavigation();
     return (
         <View style={styles.footerMenu__wrap}>
-            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Top')}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Top'}]})}>
                 <Entypo name="home" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>一覧</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('CategoryList')}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'CategoryList'}]})}>
                 <MaterialIcons name="category" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>カテゴリー</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Post')}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Post'}]})}>
                 <MaterialIcons name="post-add" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>投稿</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Search')}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Search'}]})}>
                 <Feather name="search" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>検索</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.navigate('Mylist')}>
+            <TouchableOpacity style={styles.footerMenu__item} onPress={() => navigation.reset({ index: 0, routes: [{name: 'Mylist'}]})}>
                 <Feather name="list" size={24} color="#6f6152" />
                 <Text style={styles.footerMenu__text}>マイリスト</Text>
             </TouchableOpacity>

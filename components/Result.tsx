@@ -27,13 +27,10 @@ const Result: React.FC = () => {
     useEffect(() => {
         axios.post(`http://senzin.site/api/getResultPostData`, searchData)
         .then((res) => {
-            console.log(res.data.data)
             setPostList(res.data.data);
         })
     },[])
 
-    console.log(searchData)
-    console.log(postList);
 
     return (
         <View>

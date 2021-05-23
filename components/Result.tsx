@@ -57,6 +57,11 @@ const Result: React.FC = () => {
                                 </TouchableOpacity>
                             )
                         })}
+                        {(() => {
+                            if (postList?.length === 0) {
+                                return <Text style={styles.result__ideas__item__noposts}>該当する投稿がありません</Text>
+                            }
+                        })()}
                     </ScrollView>
                 </SafeAreaView>
             </View>
@@ -134,6 +139,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 10,
     },
+    result__ideas__item__noposts: {
+        textAlign: 'center',
+        fontSize: 25,
+        fontWeight: 'bold'
+    }
 })
 
 export default Result;

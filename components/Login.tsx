@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         marginRight: 'auto',
         marginLeft: 'auto',
-        width: '80%'
+        width: '85%'
     },
     login__form__text: {
         fontSize: 28
